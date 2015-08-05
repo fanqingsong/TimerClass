@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <script src="./lib/jquery.js"></script>
+        <script src="./src/timer_core.js"></script>
+    </head>
+    <body>
+    <label>timer msg :</label> </br>
+    <textarea id="timer_msg" style="width:500px; height:300px"></textarea>
+    <script>
+    $.fn.extend({printMsg : function(msg){
+         var oldmsg = $(this).val();
+         var newmsg = oldmsg + "\n" + msg;
+         $(this).val(newmsg);
+    }});
+    
+    /* 未定时超时时间 */
+    var timer1 = new TimerClass(function(){
+        $("#timer_msg").printMsg(this.getTimerID()+"-timer custom alarm -- 未定时超时时间");
+    });
+    timer1.start();
+    //timer1.stop();
+    
+    /* 超时时间定制 */
+    var timer2 = new TimerClass(function(){
+        $("#timer_msg").printMsg(this.getTimerID()+"-timer custom alarm -- 超时时间定制");
+    }, {timeout:4000});
+    timer2.start();
+
+    /* 循环执行 */
+    var timer6 = new TimerClass(function(){
+        $("#timer_msg").printMsg(this.getTimerID()+"-timer custom alarm -- 循环执行");
+    }, {isInterval:true});
+    timer6.start();
+    </script>
+    </body>
+</html>
