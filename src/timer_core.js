@@ -5,13 +5,7 @@
 *  Changes:
 *******************************************************************************/
 
-/* 解决IE下打印接口默认不开启的情况 */
-console.log = console.log || function(){
-    //使用alert
-    alert(Array.prototype.slice.call(arguments))
-};
-
-var TimerClass = (function(){
+(function(){
     /***************************************************************************
     *  Description: 类的构造函数
     *  Parameter： fnAlarmIn -- 定时器到期后执行函数
@@ -45,6 +39,59 @@ var TimerClass = (function(){
     }
 
     /***************************************************************************
+    *  Description: 定时器原型定义
+    *  Changes:
+    ****************************************************************************/
+    timer.prototype = {
+        start : function(){
+            this.timerHandle = setTimeout(function(){
+                console.log(this.getTimerID() + "-->timer triggered");
+
+                /* 处理回调函数处理 */
+                if ( this.fnAlarm )
+                {
+                    // this. 保证fnAlarm函数中 this 指代定时器对象
+                    this.fnAlarm();
+                }
+
+                /* 定时器销毁 */
+                this.stop();
+
+                /* 如果支持间隔执行，则再次启动定时器 */
+                if ( this.isInterval )
+                {
+                    this.start();
+                }
+            // bind 保证此函数中this指代定时器对象
+            }.bind(this), this.timeout); 
+
+            console.log(this.getTimerID() .toString() + "-timer started");
+        },
+        stop : function(){
+            console.log(this.getTimerID().toString() + "-timer destroyed");
+
+            clearTimeout(this.timerHandle);
+
+            this.timerHandle = undefined;
+        },
+        getTimerID : function(){
+            return this.timerHandle;
+        }
+    };
+
+    timer.prototype.constructor = timer;
+
+    /* 将构造函数开放到全局环境中 */
+    window.TimerClass = timer; 
+
+
+    /* 解决IE下打印接口默认不开启的情况 */
+    console.log = console.log || function(){
+        //IE调试使用alert
+        //alert(Array.prototype.slice.call(arguments))
+    };
+
+    /***************************************************************************
     *  Description: bind interface Polyfill by MDN，
             为定时器回调函数使用this表示定时器对象引入
             recite form :https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
@@ -74,47 +121,4 @@ var TimerClass = (function(){
         return fBound;
       };
     }
-
-    /***************************************************************************
-    *  Description: 定时器原型定义
-    *  Changes:
-    ****************************************************************************/
-    timer.prototype = {
-        start : function(){
-            this.timerHandle = setTimeout(function(){
-                console.log(this.getTimerID() + "-->timer triggered");
-
-                /* 处理回调函数处理 */
-                if ( this.fnAlarm )
-                {
-                    this.fnAlarm.call(this);
-                }
-
-                /* 定时器销毁 */
-                this.stop();
-
-                /* 如果支持间隔执行，则再次启动定时器 */
-                if ( this.isInterval )
-                {
-                    this.start();
-                }
-            }.bind(this), this.timeout);
-
-            console.log(this.getTimerID() .toString() + "-timer started");
-        },
-        stop : function(){
-            console.log(this.getTimerID().toString() + "-timer destroyed");
-
-            clearTimeout(this.getTimerID());
-
-            delete this.timerHandle;
-        },
-        getTimerID : function(){
-            return this.timerHandle;
-        }
-    };
-
-    timer.prototype.constructor = timer;
-
-    return timer; 
 })();
