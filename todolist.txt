@@ -1,8 +1,0 @@
-
-
-
-1、 if timer want to update one DOM， this timer must be tying to this DOM， wen dom destroy， this timer must destroy。
-    for ajax to update another HTML scenario.
-
-
-

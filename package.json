@@ -1,0 +1,37 @@
+{
+  "name": "TimerClass",
+  "version": "1.0.0",
+  "description": "a simple timer to replace setTimeout and setInterval.",
+  "main": "./dist/timer.umd.js",
+  "scripts": {
+    "build": "webpack --config webpack-config.js",
+    "publish": "npm publish",
+    "lint": "eslint src"
+  },
+  "keywords": ["timer"],
+  "author": "lightsong",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fanqingsong/TimerClass"
+  },
+  "devDependencies": {
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-2": "^6.5.0",
+    "css-loader": "^0.23.1",
+    "eslint": "^2.12.0",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-babel": "^3.2.0",
+    "html-webpack-plugin": "^2.21.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^3.5.4",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "pleasejs": "^0.4.2"
+  }
+}
